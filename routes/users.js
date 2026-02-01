@@ -11,17 +11,17 @@ router.post('/register', async (req, res) => {
     try {
         const { name, password } = req.body;
         if ( !name || !password ) {
-            return res.status(400).json({ error: 'Name and password are required' });
+            return res.status(400).json({ error: '姓名跟密碼都必須填！' });
         };
 
         const exist = await User.findOne({ name });
         if (exist) {
-            return res.status(409).json({ error: 'already exists' });
+            return res.status(409).json({ error: '姓名已被註冊！' });
         };
 
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await User.create({ name, password: hashedPassword });
-        res.status(201).json({ message: 'Admin registered successfully', userId: user._id, name: user.name });
+        res.status(201).json({ message: '帳號註冊成功！', userId: user._id, name: user.name });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -33,12 +33,12 @@ router.post('/login', async (req, res) => {
 
     const user = await User.findOne({ name });
     if (!user) {
-      return res.status(401).json({ error: 'Invalid credentials' })
+      return res.status(401).json({ error: '沒找到此帳號！' })
     };
 
     const isMatch = await bcrypt.compare(password, user.password)
     if (!isMatch) {
-      return res.status(401).json({ error: 'Invalid credentials' })
+      return res.status(401).json({ error: '密碼不正確！' })
     };
 
     const token = jwt.sign(
