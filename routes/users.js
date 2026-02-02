@@ -27,6 +27,10 @@ router.post('/register', async (req, res) => {
     }
 });
 
+router.get('/login', (req, res) => {
+    res.render('login', { error: null });
+});
+
 router.post('/login', async (req, res) => {
   try {
     const { name, password } = req.body;
