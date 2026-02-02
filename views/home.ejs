@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/Tofu.png" type="image/png" />
+    <title>藤原とうふ店 (自家用)</title>
+</head>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                    "Noto Sans", Arial, sans-serif; }
+
+    body { display: flex; justify-content: center; align-items: center; height: 100vh; }
+
+    .go {  padding: 32px; width: 500px; 
+          border-radius: 14px;  text-align: center; display: block; }
+
+    img { width: 65%; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08); margin-bottom: 20px; border-radius: 14px; }
+
+    button { width: 65%; padding: 12px; background: linear-gradient(135deg, #4f7df3, #366bd6); color: white; margin-bottom: 15px;
+            border: none; border-radius: 8px; font-size: 15px; cursor: pointer; transition: transform 0.1s, box-shadow 0.1s; }
+
+    button:hover { box-shadow: 0 8px 20px rgba(54, 107, 214, 0.35); transform: translateY(-1px); }
+    button:active { transform: translateY(0); box-shadow: 0 4px 10px rgba(54, 107, 214, 0.25); }
+    p { color: gray; }
+</style>
+<body>
+    <div class="go" id="go">
+        <img src="/Tofu.png" alt="藤原豆腐店">
+        <div>
+            <button class="toOrder">下訂單</button>
+            <button class="selectOrder">查訂單</button>
+        </div>
+        <p>*開放訂購時間 (1:00 AM ~ 6:00 AM)*</p>
+        <p>*豆腐易壞只限當天現做*</p>
+    </div>
+    <script>
+        // document.querySelector('.toOrder').onclick = () => {
+        //     location.href = './order.html';
+        // };
+        // document.querySelector('.selectOrder').onclick = () => {
+        //     location.href = './selectOrder.html';
+        // };
+    </script>
+</body>
+</html>
