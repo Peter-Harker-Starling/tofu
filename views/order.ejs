@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./Tofu.jpg" type="image/jpg" />
+    <title>藤原とうふ店 (自家用)</title>
+</head>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                    "Noto Sans", Arial, sans-serif; }
+
+    body { display: flex; justify-content: flex-start; align-items: center; flex-direction: column; min-height: 100vh; padding: 40px 20px; }
+
+    .toOrdertitle {  padding: 32px; width: 100%; max-width: 450px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        margin-bottom: 15px; border-radius: 14px; }
+
+    .title-row { display: flex; align-items: center; justify-content: space-between; }
+
+    .title-row h1 { margin: 0; font-size: clamp(24px, 5vw, 32px); }
+
+    .back-btn { margin: 0; white-space: nowrap; }
+    
+    .toOrdercontent {  padding: 32px; width: 100%; max-width: 450px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+          border-radius: 14px; margin-bottom: 15px; display: block; }
+
+    h2 { margin-bottom: 20px;  font-size: clamp(20px, 4vw, 24px); }
+
+    .input-name { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd;
+        border-radius: 8px; font-size: 14px; }
+
+    .custom-select { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd;
+        border-radius: 8px; font-size: 14px; }
+
+    .toOrdertofu { padding: 25px; width: 450px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+          border-radius: 14px; margin-bottom: 15px; }
+
+    .Tofu { width: 100%; padding: 16px; margin-top: 15px; margin-bottom: 15px; border: 1px solid #ddd;
+        border-radius: 8px; font-size: 14px; display: flex; align-items: center; justify-content: space-between;
+        flex-wrap: wrap; gap: 12px; }
+
+    .info { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+    .price { color: #666; font-size: 13px; }
+
+    .count { display: flex; align-items: center; gap: 8px; }
+
+    .count button { width: 30px; height: 30px; margin: 0; padding: 5px; min-width: 30px; }
+
+    .count input { width: 40px; text-align: center; border: 0; }
+
+    .total {  padding: 32px; width: 450px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08); border-radius: 14px; }
+
+    .total-row { display: flex; align-items: center; justify-content: space-between;
+        gap: 16px; flex-wrap: wrap; }
+
+    .total-row h2 { margin: 0; }
+
+    .submit { margin: 0; }
+
+    button { width: auto; min-width: 80px; padding: 8px; background: linear-gradient(135deg, #4f7df3, #366bd6); color: white; margin-bottom: 15px;
+             border: none; border-radius: 8px; font-size: 15px; cursor: pointer; transition: transform 0.1s, box-shadow 0.1s; }
+
+    button:hover { box-shadow: 0 8px 20px rgba(54, 107, 214, 0.35); transform: translateY(-1px); }
+    button:active { transform: translateY(0); box-shadow: 0 4px 10px rgba(54, 107, 214, 0.25); }
+
+    /* 平板尺寸 */
+    @media (max-width: 768px) {
+        body { padding: 20px 16px; }
+        
+        .toOrdertitle, .toOrdercontent, .toOrdertofu, .total {
+            padding: 24px;
+        }
+        
+        .title-row h1 { font-size: 24px; }
+        
+        h2 { font-size: 20px; }
+    }
+
+    /* 手機尺寸 */
+    @media (max-width: 480px) {
+        body { padding: 16px 12px; }
+        
+        .toOrdertitle, .toOrdercontent, .toOrdertofu, .total {
+            padding: 20px;
+            border-radius: 12px;
+        }
+        
+        .title-row { gap: 12px; }
+        
+        .title-row h1 { font-size: 20px; }
+        
+        h2 { font-size: 18px; margin-bottom: 16px; }
+        
+        .Tofu { padding: 12px; font-size: 13px; }
+        
+        .info { width: auto; }
+        
+        .count { margin-left: auto; }
+        
+        button { font-size: 14px; padding: 8px 12px; min-width: 70px; }
+        
+        .total-row h2 { font-size: 18px; }
+    }
+
+    /* 極小螢幕 */
+    @media (max-width: 360px) {
+        .title-row h1 { font-size: 18px; }
+        
+        .back-btn { font-size: 13px; padding: 6px 10px; }
+        
+        .count button { width: 28px; height: 28px; font-size: 14px; }
+        
+        .count input { width: 35px; font-size: 13px; }
+    }
+</style>
+<body>
+    <div class="toOrdertitle">
+        <div class="title-row">
+            <h1>下訂單</h1>
+            <button class="back-btn">返回</button>
+        </div>
+    </div>
+    <form action="" method="post" id="orderForm">
+        <div class="toOrdercontent">
+            <h2>配送資訊</h2>
+            <input type="text" class="input-name" name="customerName" placeholder="姓名" required>
+            <input type="text" class="input-name" name="phone" placeholder="電話" required>
+            <input type="text" class="input-name" name="address" placeholder="地址" required>
+            <select name="deliveryTime" class="custom-select">
+                <option value="">選擇配送時間</option>
+                <option value="01:00">01:00</option>
+                <option value="02:00">02:00</option>
+                <option value="03:00">03:00</option>
+                <option value="04:00">04:00</option>
+                <option value="05:00">05:00</option>
+                <option value="06:00">06:00</option>
+            </select>
+        </div>
+        <div class="toOrdertofu">
+            <div class="Tofu" data-price="30" name="momen_tofu">
+                <div class="info">
+                    <span class="name">板豆腐</span>
+                    <span class="price">$30 / 丁</span>
+                </div>
+                <div class="count">
+                    <button type="button" onclick="countMinus(this)">-</button>
+                    <input type="text" value="0" readonly>
+                    <button type="button" onclick="countAdd(this)">+</button>
+                </div>
+            </div>
+            <div class="Tofu" data-price="30" name="soft_tofu">
+                <div class="info">
+                    <span class="name">嫩豆腐</span>
+                    <span class="price">$30 / 丁</span>
+                </div>
+                <div class="count">
+                    <button type="button" onclick="countMinus(this)">-</button>
+                    <input type="text" value="0" readonly>
+                    <button type="button" onclick="countAdd(this)">+</button>
+                </div>
+            </div>
+            <div class="Tofu" data-price="10" name="fried_tofu">
+                <div class="info">
+                    <span class="name">油豆腐</span>    
+                    <span class="price">$10 / 丁</span>
+                </div>
+                <div class="count">
+                    <button type="button" onclick="countMinus(this)">-</button>
+                    <input type="text" value="0" readonly>
+                    <button type="button" onclick="countAdd(this)">+</button>
+                </div>
+            </div>
+        </div>
+        <div class="total">
+            <div class="total-row">
+                <h2>總金額：$<span id="totalAmount">0</span></h2>
+                <button type="submit" class="submit">送出</button>
+            </div>
+        </div>
+    </form>
+    <script>
+        function updateTotal() {
+            let total = 0;
+
+            document.querySelectorAll('.Tofu').forEach(item => {
+                const price = Number(item.dataset.price);
+                const count = Number(item.querySelector('input').value);
+                total += price * count;
+            });
+
+            document.getElementById('totalAmount').textContent = total;
+        };
+
+        function countAdd(btn) {
+            const input = btn.parentElement.querySelector('input');
+            let count = Number(input.value);
+            input.value = count + 1;
+            updateTotal();
+        };
+
+        function countMinus(btn) {
+            const input = btn.parentElement.querySelector('input');
+            let count = Number(input.value);
+            if (count > 0) {
+                input.value = count - 1;
+                updateTotal();
+            };
+        };
+
+        document.getElementById('orderForm').onsubmit = function(e) {
+            const total = Number(document.getElementById('totalAmount').textContent);
+                if (total <= 0) {
+                    alert("文太：不買豆腐就別來亂！(請至少選擇一項商品)");
+                    e.preventDefault(); // 阻止表單送出
+                };
+        };
+
+        document.querySelector('.back-btn').onclick = () => {
+            location.href = '/';
+        };
+    </script>
+</body>
+</html>

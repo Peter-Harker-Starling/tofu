@@ -11,12 +11,19 @@ const PRODUCTS = {
   soft_tofu: { name: '嫩豆腐', price: 30 }
 };
 
-// POST /api/orders - 建立新訂單
+router.get('/order', (req, res) => {
+    res.render('order');
+});
+
+router.get('/select', (req, res) => {
+    res.render('selectOrder');
+});
+
 router.post('/order', async (req, res) => {
     try {
         const { customerName, phone, address, deliveryTime } = req.body;
 
-        // 1. 過勞檢查：檢查同一個 deliveryTime 是否已有 5 張單
+        // 1. 過勞檢查：檢查同一個 deliveryTime 是否已有 2 張單
         const orderCount = await TofuOrder.countDocuments({ deliveryTime });
         if (orderCount >= 2) {
             return res.status(400).send(`
@@ -74,6 +81,40 @@ router.post('/order', async (req, res) => {
         console.error(err);
         res.status(500).send("系統出錯了，請檢查後台");
     };
+});
+
+router.get('/:phone', async (req, res) => {
+  const orders = await TofuOrder.find({ phone: req.params.phone }).sort({ createdAt: -1 }); // 新的在前
+  res.json(orders);
+});
+
+router.get('/', auth, async (req, res) => {
+    const orders = await TofuOrder.find().sort({ createdAt: -1 }); // 新的在前
+    res.json(orders);
+});
+
+router.patch('/:id/status', auth, async (req, res) => {
+  const { status } = req.body;
+  if (!['準備中', '已出貨'].includes(status)) {
+    return res.status(400).json({ error: '無效的訂單狀態' });
+  }
+
+  const order = await TofuOrder.findByIdAndUpdate(
+    req.params.id,
+    { status },
+    { new: true }
+  );
+
+  if (!order) {
+    return res.status(404).json({ error: '訂單不存在' });
+  };
+
+  res.json(order);
+});
+
+router.delete('/:id', auth, async (req, res) => {
+  await TofuOrder.findByIdAndDelete(req.params.id);
+  res.status(204).end();
 });
 
 module.exports = router;

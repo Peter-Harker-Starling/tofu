@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./Tofu.jpg" type="image/jpg" />
+    <title>藤原とうふ店 (自家用)</title>
+</head>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                    "Noto Sans", Arial, sans-serif; }
+
+    body { display: flex; justify-content: flex-start; align-items: center; flex-direction: column; min-height: 100vh; padding: 40px 20px; }
+
+    .container { width: 100%; max-width: 450px; }
+
+    .selectOrdertitle {  padding: 32px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        margin-bottom: 15px; border-radius: 14px; }
+
+    .title-row { display: flex; align-items: center; justify-content: space-between; }
+
+    .title-row h1 { margin: 0; font-size: clamp(24px, 5vw, 32px); }
+
+    .back-btn { margin: 0; white-space: nowrap; }
+
+    .selectOrdercontent {  padding: 32px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        border-radius: 14px; display: flex; }
+
+    .input-phone { flex: 1; padding: 12px; border: 1px solid #ddd; 
+        border-radius: 8px; font-size: 14px; }
+
+    .submit { margin: 0; margin-left: 10px; }
+
+    button { width: auto; min-width: 80px; padding: 8px; background: linear-gradient(135deg, #4f7df3, #366bd6); color: white; margin-bottom: 15px;
+             border: none; border-radius: 8px; font-size: 15px; cursor: pointer; transition: transform 0.1s, box-shadow 0.1s; }
+
+    button:hover { box-shadow: 0 8px 20px rgba(54, 107, 214, 0.35); transform: translateY(-1px); }
+    button:active { transform: translateY(0); box-shadow: 0 4px 10px rgba(54, 107, 214, 0.25); }
+
+    #resultArea h3 { margin-bottom: 12px; font-size: 18px; }
+
+    .result { background: #fff; border-radius: 14px; padding: 20px; margin-top: 12px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08); font-size: 14px; line-height: 1.6; }
+
+    .result + .result { margin-top: 16px; }
+
+    /* 狀態 */
+    .result .status { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 15px;
+    font-weight: 600; background: #eef2ff; color: #366bd6; margin-bottom: 15px; }
+
+    /* 訂單清單 */
+    .result ul { padding-left: 18px; }
+
+    .result li { margin-bottom: 4px; }
+
+    /* 總金額 */
+    .result .total { margin-top: 10px; font-size: 20px; font-weight: bold; color: #366bd6; }
+    /* 平板尺寸 */
+    @media (max-width: 768px) {
+        body { padding: 20px 16px; }
+        
+        .selectOrdertitle, .selectOrdercontent {
+            padding: 24px;
+        }
+        
+        .title-row h1 { font-size: 24px; }
+        
+    }
+
+    /* 手機尺寸 */
+    @media (max-width: 480px) {
+        body { padding: 16px 12px; }
+        
+        .selectOrdertitle, .selectOrdercontent {
+            padding: 20px;
+            border-radius: 12px;
+        }
+        
+        .title-row { gap: 12px; }
+        
+        .title-row h1 { font-size: 20px; }
+        
+        button { font-size: 14px; padding: 8px 12px; min-width: 70px; }
+        
+        .selectOrdercontent { gap: 8px; }
+    }
+
+    /* 極小螢幕 */
+    @media (max-width: 360px) {
+        .title-row h1 { font-size: 18px; }
+        
+        .back-btn { font-size: 13px; padding: 6px 10px; }
+        
+        .submit { font-size: 13px; min-width: 60px; }
+    }
+</style>
+<body>
+    <div class="container">
+        <div class="selectOrdertitle">
+            <div class="title-row">
+                <h1>查訂單</h1>
+                <button class="back-btn">返回</button>
+            </div>
+        </div>
+        <form id="searchForm">
+            <div class="selectOrdercontent">
+                <input type="text" class="input-phone" name="phone" placeholder="請輸入電話" required>
+                <button class="submit">查詢</button>
+            </div>
+        </form>
+        <div id="resultArea" style="margin-top: 20px;"></div>
+    </div>
+    <script>
+        document.querySelector('.back-btn').onclick = () => {
+            location.href = '/';
+        };
+
+        document.getElementById('searchForm').onsubmit = async (e) => {
+            e.preventDefault(); // 防止表單傳統跳轉送出
+            const phone = e.target.phone.value;
+            const resultArea = document.getElementById('resultArea');
+
+            try {
+                // 假設你的 API 是 GET /api/orders/track/:phone
+                const response = await fetch(`/tofu/${phone}`);
+                const orders = await response.json();
+                console.log(orders);
+
+                if (orders.length === 0) {
+                    resultArea.innerHTML = '<p>查無訂單，文太說你可能記錯電話了。</p>';
+                    return;
+                }
+
+                // 渲染訂單清單
+                let html = '<h3>你的訂單紀錄：</h3>';
+                orders.forEach(order => {
+                    const itemsList = order.items.map(item => `<li>${item.name}：${item.qty} 丁</li>`).join('');
+                    html += `
+                        <div class="result">
+                            <span style="font-weight: 600;">狀態：</span><div class="status">${order.status}</div>
+                            <p>姓名：${order.customerName}</p>
+                            <p>電話：${order.phone}</p>
+                            <p>地址：${order.address}</p>
+                            <p>配送時間：${order.deliveryTime}</p>
+                            <br>
+                            <h3 style="margin: 0;">訂單資訊：</h3>
+                            <ul>${itemsList}</ul>
+                            <div class="total">總金額：$${order.totalAmount}</div>
+                        </div>
+                    `;
+                });
+                resultArea.innerHTML = html;
+            } catch (err) {
+                resultArea.innerHTML = '<p>系統連線失敗</p>';
+            }
+        };
+    </script>
+</body>
+</html>
