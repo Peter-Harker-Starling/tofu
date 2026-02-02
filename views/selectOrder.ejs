@@ -103,57 +103,44 @@
                 <button class="back-btn">返回</button>
             </div>
         </div>
-        <form id="searchForm">
+        <form action="/tofu/select" method="get">
             <div class="selectOrdercontent">
                 <input type="text" class="input-phone" name="phone" placeholder="請輸入電話" required>
                 <button class="submit">查詢</button>
             </div>
         </form>
-        <div id="resultArea" style="margin-top: 20px;"></div>
+        <div id="resultArea" style="margin-top: 20px;">
+            <% if (orders === null) { %>
+                <!-- 尚未查詢，什麼都不顯示 -->
+            <% } else if (orders.length === 0) { %>
+                <p>查無訂單，文太說你可能記錯電話了。</p>
+            <% } else { %>
+                <h3>你的訂單紀錄：</h3>
+
+                <% orders.forEach(order => { %>
+                    <div class="result">
+                        <p><strong>狀態：</strong><span class="status"><%= order.status %></span></p>
+                        <p>姓名：<%= order.customerName %></p>
+                        <p>電話：<%= order.phone %></p>
+                        <p>地址：<%= order.address %></p>
+                        <p>配送時間：<%= order.deliveryTime %></p>
+
+                        <h4>訂單資訊：</h4>
+                        <ul>
+                            <% order.items.forEach(item => { %>
+                            <li><%= item.name %>：<%= item.qty %> 丁</li>
+                            <% }) %>
+                        </ul>
+
+                        <div class="total">總金額：$<%= order.totalAmount %></div>
+                    </div>
+                <% }) %>
+            <% } %>
+        </div>
     </div>
     <script>
         document.querySelector('.back-btn').onclick = () => {
             location.href = '/';
-        };
-
-        document.getElementById('searchForm').onsubmit = async (e) => {
-            e.preventDefault(); // 防止表單傳統跳轉送出
-            const phone = e.target.phone.value;
-            const resultArea = document.getElementById('resultArea');
-
-            try {
-                // 假設你的 API 是 GET /api/orders/track/:phone
-                const response = await fetch(`/tofu/${phone}`);
-                const orders = await response.json();
-                console.log(orders);
-
-                if (orders.length === 0) {
-                    resultArea.innerHTML = '<p>查無訂單，文太說你可能記錯電話了。</p>';
-                    return;
-                }
-
-                // 渲染訂單清單
-                let html = '<h3>你的訂單紀錄：</h3>';
-                orders.forEach(order => {
-                    const itemsList = order.items.map(item => `<li>${item.name}：${item.qty} 丁</li>`).join('');
-                    html += `
-                        <div class="result">
-                            <span style="font-weight: 600;">狀態：</span><div class="status">${order.status}</div>
-                            <p>姓名：${order.customerName}</p>
-                            <p>電話：${order.phone}</p>
-                            <p>地址：${order.address}</p>
-                            <p>配送時間：${order.deliveryTime}</p>
-                            <br>
-                            <h3 style="margin: 0;">訂單資訊：</h3>
-                            <ul>${itemsList}</ul>
-                            <div class="total">總金額：$${order.totalAmount}</div>
-                        </div>
-                    `;
-                });
-                resultArea.innerHTML = html;
-            } catch (err) {
-                resultArea.innerHTML = '<p>系統連線失敗</p>';
-            }
         };
     </script>
 </body>

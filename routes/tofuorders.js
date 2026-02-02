@@ -15,10 +15,6 @@ router.get('/order', (req, res) => {
     res.render('order');
 });
 
-router.get('/select', (req, res) => {
-    res.render('selectOrder');
-});
-
 router.post('/order', async (req, res) => {
     try {
         const { customerName, phone, address, deliveryTime } = req.body;
@@ -83,9 +79,17 @@ router.post('/order', async (req, res) => {
     };
 });
 
-router.get('/:phone', async (req, res) => {
-  const orders = await TofuOrder.find({ phone: req.params.phone }).sort({ createdAt: -1 }); // 新的在前
-  res.json(orders);
+router.get('/select', async (req, res) => {
+    const phone = req.query.phone;
+
+    let orders = null;
+    if (phone) {
+        orders = await TofuOrder
+          .find({ phone })
+          .sort({ createdAt: -1 });
+    };
+
+    res.render('selectOrder', { orders });
 });
 
 router.get('/', auth, async (req, res) => {
