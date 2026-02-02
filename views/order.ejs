@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="./Tofu.jpg" type="image/jpg" />
+    <link rel="icon" href="./Tofu.png" type="image/png" />
     <title>藤原とうふ店 (自家用)</title>
 </head>
 <style>
@@ -122,7 +122,7 @@
             <button class="back-btn">返回</button>
         </div>
     </div>
-    <form action="" method="post" id="orderForm">
+    <form action="/tofu/order" method="post" id="orderForm">
         <div class="toOrdercontent">
             <h2>配送資訊</h2>
             <input type="text" class="input-name" name="customerName" placeholder="姓名" required>
@@ -139,36 +139,36 @@
             </select>
         </div>
         <div class="toOrdertofu">
-            <div class="Tofu" data-price="30" name="momen_tofu">
+            <div class="Tofu" data-price="30">
                 <div class="info">
                     <span class="name">板豆腐</span>
                     <span class="price">$30 / 丁</span>
                 </div>
                 <div class="count">
                     <button type="button" onclick="countMinus(this)">-</button>
-                    <input type="text" value="0" readonly>
+                    <input type="text" name="momen_tofu" value="0" readonly>
                     <button type="button" onclick="countAdd(this)">+</button>
                 </div>
             </div>
-            <div class="Tofu" data-price="30" name="soft_tofu">
+            <div class="Tofu" data-price="30">
                 <div class="info">
                     <span class="name">嫩豆腐</span>
                     <span class="price">$30 / 丁</span>
                 </div>
                 <div class="count">
                     <button type="button" onclick="countMinus(this)">-</button>
-                    <input type="text" value="0" readonly>
+                    <input type="text" name="soft_tofu" value="0" readonly>
                     <button type="button" onclick="countAdd(this)">+</button>
                 </div>
             </div>
-            <div class="Tofu" data-price="10" name="fried_tofu">
+            <div class="Tofu" data-price="10">
                 <div class="info">
                     <span class="name">油豆腐</span>    
                     <span class="price">$10 / 丁</span>
                 </div>
                 <div class="count">
                     <button type="button" onclick="countMinus(this)">-</button>
-                    <input type="text" value="0" readonly>
+                    <input type="text" name="fried_tofu" value="0" readonly>
                     <button type="button" onclick="countAdd(this)">+</button>
                 </div>
             </div>
