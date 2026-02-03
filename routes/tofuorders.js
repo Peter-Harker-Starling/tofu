@@ -11,8 +11,16 @@ const PRODUCTS = {
   soft_tofu: { name: '嫩豆腐', price: 30 }
 };
 
-router.get('/order', (req, res) => {
-    res.render('order');
+router.get('/order', async (req, res) => {
+    const timeSlots = ['01:00', '02:00', '03:00', '04:00', '05:00'];
+    let slotsWithStatus = [];
+
+    for (const time of timeSlots) {
+        const count = await TofuOrder.countDocuments({ deliveryTime: time });
+        slotsWithStatus.push({ time, full: count >= 2 });
+    };
+
+    res.render('order', { slotsWithStatus });
 });
 
 router.post('/order', async (req, res) => {

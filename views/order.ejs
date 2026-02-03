@@ -130,12 +130,12 @@
             <input type="text" class="input-name" name="address" placeholder="地址" required>
             <select name="deliveryTime" class="custom-select">
                 <option value="">選擇配送時間</option>
-                <option value="01:00">01:00</option>
-                <option value="02:00">02:00</option>
-                <option value="03:00">03:00</option>
-                <option value="04:00">04:00</option>
-                <option value="05:00">05:00</option>
-                <option value="06:00">06:00</option>
+                <% slotsWithStatus.forEach(slot => { %>
+                    <option value="<%= slot.time %>" <%= slot.full ? 'disabled' : '' %>>
+                        <%= slot.time %>
+                        <%= slot.full ? '（已額滿）' : '' %>
+                    </option>
+                <% }); %>
             </select>
         </div>
         <div class="toOrdertofu">
