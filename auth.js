@@ -5,7 +5,7 @@ function jwtauth(req, res, next) {
   const token = req.cookies.admin_token;
 
   if (!token) {
-    return res.status(401).json({ error: 'Not authenticated' })
+    return res.redirect('/users/login');
   };
 
   try {

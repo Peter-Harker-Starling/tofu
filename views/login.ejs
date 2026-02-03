@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./Tofu.png" type="image/png" />
     <title>Login</title>
 </head>
 <style>
@@ -91,7 +92,7 @@
             <script>alert('<%= error %>');</script>
         <% } %>
         <form action="/users/login" method="post">
-            <input type="text" name="username" placeholder="帳號" required />
+            <input type="text" name="name" placeholder="帳號" required />
             <input type="password" name="password" placeholder="密碼" required />
             <button type="submit">Login</button>
         </form>

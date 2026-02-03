@@ -100,9 +100,13 @@ router.get('/select', async (req, res) => {
     res.render('selectOrder', { orders });
 });
 
-router.get('/', auth, async (req, res) => {
-    const orders = await TofuOrder.find().sort({ createdAt: -1 }); // 新的在前
-    res.json(orders);
+router.get('/dashboard', auth, async (req, res) => {
+    try {
+        const orders = await TofuOrder.find().sort({ createdAt: -1 }); // 新的在前
+        res.render('dashboard', { orders: orders });
+    } catch (err) {
+        res.status(500).send("系統出錯了，請檢查後台");
+    };
 });
 
 router.patch('/:id/status', auth, async (req, res) => {
@@ -126,7 +130,7 @@ router.patch('/:id/status', auth, async (req, res) => {
 
 router.delete('/:id', auth, async (req, res) => {
   await TofuOrder.findByIdAndDelete(req.params.id);
-  res.status(204).end();
+  res.redirect('/tofu/dashboard');
 });
 
 module.exports = router;

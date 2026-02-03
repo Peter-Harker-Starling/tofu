@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./Tofu.png" type="image/png" />
+    <title>後台管理</title>
+</head>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                    "Noto Sans", Arial, sans-serif; }
+
+    body { display: flex; justify-content: flex-start; align-items: center; flex-direction: column; min-height: 100vh; padding: 40px 20px; }
+
+    .container { width: 100%; max-width: 450px; }
+
+    .editOrdertitle {  padding: 32px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        margin-bottom: 15px; border-radius: 14px; }
+
+    .title-row { display: flex; align-items: center; justify-content: space-between; }
+
+    .title-row h1 { margin: 0; font-size: clamp(24px, 5vw, 32px); }
+
+    .back-btn { margin: 0; white-space: nowrap; }
+
+    button { width: auto; min-width: 80px; padding: 8px; background: linear-gradient(135deg, #f34f4f, #d63636); color: white; margin-bottom: 15px;
+             border: none; border-radius: 8px; font-size: 15px; cursor: pointer; transition: transform 0.1s, box-shadow 0.1s; }
+
+    button:hover { box-shadow: 0 8px 20px rgba(54, 107, 214, 0.35); transform: translateY(-1px); }
+    button:active { transform: translateY(0); box-shadow: 0 4px 10px rgba(54, 107, 214, 0.25); }
+
+    .order-card { background: #fff; border-radius: 14px; padding: 20px; margin-top: 12px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08); font-size: 14px; line-height: 1.6; }
+
+    .order-card + .order-card { margin-top: 16px; }
+
+    .order-card .ord { margin-top: 10px; }
+
+    .items-box {margin-left: 10px; margin-bottom: 10px; }
+
+    /* 平板尺寸 */
+    @media (max-width: 768px) {
+        body { padding: 20px 16px; }
+        
+        .editOrdertitle, .editOrdercontent {
+            padding: 24px;
+        }
+        
+        .title-row h1 { font-size: 24px; }
+        
+    }
+
+    /* 手機尺寸 */
+    @media (max-width: 480px) {
+        body { padding: 16px 12px; }
+        
+        .editOrdertitle, .editOrdercontent {
+            padding: 20px;
+            border-radius: 12px;
+        }
+        
+        .title-row { gap: 12px; }
+        
+        .title-row h1 { font-size: 20px; }
+        
+        button { font-size: 14px; padding: 8px 12px; min-width: 70px; }
+        
+        .editOrdercontent { gap: 8px; }
+    }
+
+    /* 極小螢幕 */
+    @media (max-width: 360px) {
+        .title-row h1 { font-size: 18px; }
+        
+        .back-btn { font-size: 13px; padding: 6px 10px; }
+    }
+</style>
+<body>
+    <div class="container">
+        <div class="editOrdertitle">
+            <div class="title-row">
+                <h1>後台管理</h1>
+                <form action="/users/logout" method="post">
+                    <button class="back-btn">登出</button>
+                </form>
+            </div>
+        </div>
+        <div class="editOrdercontent" style="margin-top: 20px;">
+            <% orders.forEach(order => { %>
+                <div class="order-card">
+                    <h3>訂單來源：<%= order.customerName %></h3>
+                    <p>電話：<%= order.phone %></p>
+                    <p>配送地址：<%= order.address %></p>
+                    <p>配送時間：<strong><%= order.deliveryTime %></strong></p>
+
+                    <h3 class="ord">訂單內容：</h3>
+                    <div class="items-box">
+                        <ul>
+                            <% order.items.forEach(item => { %>
+                            <li><%= item.name %>：<%= item.qty %> 丁</li>
+                            <% }) %>
+                        </ul>
+                    </div>
+
+                    <p>總金額：$<%= order.totalAmount %></p>
+                    <p>狀態：<%= order.status %></p>
+
+                    <form action="/tofu/<%= order._id %>?_method=DELETE" method="POST">
+                        <button type="submit" class="btn btn-outline-danger btn-sm" 
+                                onclick="return confirm('確定刪除 <%= order._id %> 這筆訂單?')">刪除</button>
+                    </form>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+</body>
+</html>

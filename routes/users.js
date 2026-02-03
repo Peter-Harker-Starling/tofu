@@ -35,14 +35,18 @@ router.post('/login', async (req, res) => {
   try {
     const { name, password } = req.body;
 
+    if ( !name || !password ) {
+      return res.render('login', { error: '帳號跟密碼都要填！' });
+    };
+
     const user = await User.findOne({ name });
     if (!user) {
-      return res.status(401).json({ error: '沒找到此帳號！' })
+      return res.render('login', { error: '找不到此帳號！' });
     };
 
     const isMatch = await bcrypt.compare(password, user.password)
     if (!isMatch) {
-      return res.status(401).json({ error: '密碼不正確！' })
+      return res.render('login', { error: '密碼不正確！' });
     };
 
     const token = jwt.sign(
@@ -58,9 +62,9 @@ router.post('/login', async (req, res) => {
       maxAge: 60 * 60 * 1000
     });
 
-    res.json({ success: true });
+    res.redirect('/tofu/dashboard');
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    return res.render('login', { error: '伺服器怪怪的...' });
   };
 });
 
@@ -70,7 +74,7 @@ router.post('/logout', auth, (req, res) => {
     sameSite: 'strict',
     secure: process.env.NODE_ENV === 'production'
   });
-  res.json({ success: true });
+  res.redirect('/users/login');
 });
 
 module.exports = router;
