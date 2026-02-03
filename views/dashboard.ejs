@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="./Tofu.png" type="image/png" />
+    <link rel="icon" href="/Tofu.png" type="image/png" />
     <title>後台管理</title>
 </head>
 <style>
@@ -30,14 +30,33 @@
     button:hover { box-shadow: 0 8px 20px rgba(54, 107, 214, 0.35); transform: translateY(-1px); }
     button:active { transform: translateY(0); box-shadow: 0 4px 10px rgba(54, 107, 214, 0.25); }
 
-    .order-card { background: #fff; border-radius: 14px; padding: 20px; margin-top: 12px;
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08); font-size: 14px; line-height: 1.6; }
+    .order-card { border-radius: 8px; padding: 25px;  margin-bottom: 20px; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+
+    .order-card h2 { font-size: 18px; margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+    
+    .order-card p { font-size: 14px; margin-bottom: 6px; }
+
+    .order-card h3 { font-size: 18px; margin-top: 12px; border-top: 1px solid #eee; padding-top: 8px; }
 
     .order-card + .order-card { margin-top: 16px; }
 
-    .order-card .ord { margin-top: 10px; }
+    .items-box { background: #fdfdfd; border: 1px dashed #ddd;
+             padding: 12px; margin: 15px 0; border-radius: 4px; }
 
-    .items-box {margin-left: 10px; margin-bottom: 10px; }
+    .items-box ul { list-style: none; padding-left: 5px; }
+    
+    .items-box li { color: #2d3436; font-weight: 500; font-size: 15px; }
+
+    .status-form { margin-top: 15px; display: flex; align-items: flex-end; justify-content: space-between; gap: 10px; }
+
+    .status-form form { display: flex;  align-items: flex-end; margin: 0; }
+
+    .custom-select { padding: 6px 10px;  border-radius: 4px; border: 1px solid #ddd; font-size: 14px;
+         background-color: #f9f9f9; cursor: pointer; margin-bottom: 15px; }
+
+    .del-btn { margin-top: 15px; }
+
+    .total-price { font-size: 18px; font-weight: 800; text-align: right; }
 
     /* 平板尺寸 */
     @media (max-width: 768px) {
@@ -89,12 +108,12 @@
         <div class="editOrdercontent" style="margin-top: 20px;">
             <% orders.forEach(order => { %>
                 <div class="order-card">
-                    <h3>訂單來源：<%= order.customerName %></h3>
+                    <h2>訂單來源：<%= order.customerName %></h2>
                     <p>電話：<%= order.phone %></p>
                     <p>配送地址：<%= order.address %></p>
                     <p>配送時間：<strong><%= order.deliveryTime %></strong></p>
 
-                    <h3 class="ord">訂單內容：</h3>
+                    <h3>訂單內容：</h3>
                     <div class="items-box">
                         <ul>
                             <% order.items.forEach(item => { %>
@@ -103,13 +122,21 @@
                         </ul>
                     </div>
 
-                    <p>總金額：$<%= order.totalAmount %></p>
-                    <p>狀態：<%= order.status %></p>
+                    <div class="total-price">總金額：$<%= order.totalAmount %></div>
 
-                    <form action="/tofu/<%= order._id %>?_method=DELETE" method="POST">
-                        <button type="submit" class="btn btn-outline-danger btn-sm" 
-                                onclick="return confirm('確定刪除 <%= order._id %> 這筆訂單?')">刪除</button>
-                    </form>
+                    <div class="status-form">
+                        <form action="/tofu/<%= order._id %>/status?_method=PATCH" method="POST">
+                            <select name="status" onchange="this.form.submit()" class="custom-select">
+                                <option value="準備中" <%= order.status === '準備中' ? 'selected' : '' %>>準備中</option>
+                                <option value="已出貨" <%= order.status === '已出貨' ? 'selected' : '' %>>已出貨</option>
+                            </select>
+                        </form>
+                        <form action="/tofu/<%= order._id %>?_method=DELETE" method="POST">
+                            <button type="submit" class="del-btn" 
+                                    onclick="return confirm('確定刪除 <%= order._id %> 這筆訂單?')">刪除</button>
+                        </form>
+                    </div>
+                    
                 </div>
             <% }); %>
         </div>

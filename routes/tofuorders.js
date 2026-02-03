@@ -125,7 +125,7 @@ router.patch('/:id/status', auth, async (req, res) => {
     return res.status(404).json({ error: '訂單不存在' });
   };
 
-  res.json(order);
+  res.redirect('/tofu/dashboard');
 });
 
 router.delete('/:id', auth, async (req, res) => {
