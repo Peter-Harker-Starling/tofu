@@ -14,7 +14,13 @@ function auth(req, res, next) {
     req.admin = decoded;
     return next();
   } catch (err) {
-    // access 過期 → 嘗試 refresh
+    if (err.name !== 'TokenExpiredError') {
+      // 非過期錯誤 → 直接登出
+      res.clearCookie('admin_access_token');
+      res.clearCookie('admin_refresh_token');
+      return res.redirect('/users/login');
+    };
+    // TokenExpiredError 才繼續嘗試 refresh
   };
 
   try {
