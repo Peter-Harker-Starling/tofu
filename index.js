@@ -9,11 +9,11 @@ const tofuorderRoutes = require('./routes/tofuorders');
 const app = express();
 
 app.set('view engine', 'ejs');
-app.use(methodOverride('_method')); // 讓伺服器檢查網址是否有 ?_method=DELETE
+app.use(methodOverride('_method')); //讓伺服器檢查網址是否有?_method=DELETE或?_method=PATCH
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true })); //讓Express能夠讀懂HTML(Form)送來的資料
 app.use(cookieParser());
-app.use(express.static('public'));
+app.use(express.static('public')); //在Express設定「靜態檔案」
 app.use('/users', userRoutes);
 app.use('/tofu', tofuorderRoutes);
 

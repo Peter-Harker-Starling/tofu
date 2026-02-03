@@ -49,17 +49,30 @@ router.post('/login', async (req, res) => {
       return res.render('login', { error: '密碼不正確！' });
     };
 
-    const token = jwt.sign(
+    const accessToken = jwt.sign(
       { id: user._id, name: user.name },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+      process.env.JWT_ACCESS_SECRET,
+      { expiresIn: '15m' }
     );
 
-    res.cookie('admin_token', token, {
+    const refreshToken = jwt.sign(
+      { id: user._id },
+      process.env.JWT_REFRESH_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    res.cookie('admin_access_token', accessToken, {
       httpOnly: true,
       sameSite: 'strict',
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60 * 1000
+      maxAge: 15 * 60 * 1000
+    });
+
+    res.cookie('admin_refresh_token', refreshToken, {
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 7 * 24 * 60 * 60 * 1000
     });
 
     res.redirect('/tofu/dashboard');
@@ -69,7 +82,12 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/logout', auth, (req, res) => {
-  res.clearCookie('admin_token', {
+  res.clearCookie('admin_access_token', {
+    httpOnly: true,
+    sameSite: 'strict',
+    secure: process.env.NODE_ENV === 'production'
+  });
+  res.clearCookie('admin_refresh_token', {
     httpOnly: true,
     sameSite: 'strict',
     secure: process.env.NODE_ENV === 'production'
