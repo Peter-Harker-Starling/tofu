@@ -11,11 +11,11 @@
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
                     "Noto Sans", Arial, sans-serif; }
 
-    body { display: flex; justify-content: flex-start; align-items: center; 
+    body { display: flex; justify-content: flex-start; align-items: center; width: 100%;
         flex-direction: column; min-height: 100vh; padding: 40px 20px; overflow-x: hidden; }
 
     .toOrdertitle {  padding: 32px; width: 100%; max-width: 450px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-        margin-bottom: 15px; border-radius: 14px; }
+        margin-bottom: 15px; border-radius: 14px; box-sizing: border-box; }
 
     .title-row { display: flex; align-items: center; justify-content: space-between; }
 
@@ -24,7 +24,7 @@
     .back-btn { margin: 0; white-space: nowrap; }
     
     .toOrdercontent {  padding: 32px; width: 100%; max-width: 450px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-          border-radius: 14px; margin-bottom: 15px; display: block; }
+          border-radius: 14px; margin-bottom: 15px; display: block; box-sizing: border-box; }
 
     h2 { margin-bottom: 20px;  font-size: clamp(20px, 4vw, 24px); }
 
@@ -36,7 +36,7 @@
         -webkit-appearance: none; appearance: none; }
 
     .toOrdertofu { padding: 25px; width: 100%; max-width: 450px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-          border-radius: 14px; margin-bottom: 15px; }
+          border-radius: 14px; margin-bottom: 15px; box-sizing: border-box; }
 
     .Tofu { width: 100%; padding: 16px; margin-top: 15px; margin-bottom: 15px; border: 1px solid #ddd;
         border-radius: 8px; font-size: 14px; display: flex; align-items: center; justify-content: space-between;
@@ -52,7 +52,8 @@
 
     .count input { width: 40px; text-align: center; border: 0; }
 
-    .total {  padding: 32px; width: 450px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08); border-radius: 14px; }
+    .total {  padding: 32px; width: 100%; max-width: 450px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+         border-radius: 14px; box-sizing: border-box; }
 
     .total-row { display: flex; align-items: center; justify-content: space-between;
         gap: 16px; flex-wrap: wrap; }
@@ -106,8 +107,6 @@
         .total-row h2 { font-size: 18px; }
 
         .total-row { flex-direction: column; align-items: stretch; gap: 12px; }
-
-        .submit { width: 100%; }
 
     }
 
