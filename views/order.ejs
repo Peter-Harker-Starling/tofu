@@ -11,7 +11,8 @@
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
                     "Noto Sans", Arial, sans-serif; }
 
-    body { display: flex; justify-content: flex-start; align-items: center; flex-direction: column; min-height: 100vh; padding: 40px 20px; }
+    body { display: flex; justify-content: flex-start; align-items: center; 
+        flex-direction: column; min-height: 100vh; padding: 40px 20px; overflow-x: hidden; }
 
     .toOrdertitle {  padding: 32px; width: 100%; max-width: 450px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
         margin-bottom: 15px; border-radius: 14px; }
@@ -34,7 +35,7 @@
         border-radius: 8px; font-size: 14px; background-color: #fff;
         -webkit-appearance: none; appearance: none; }
 
-    .toOrdertofu { padding: 25px; width: 450px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    .toOrdertofu { padding: 25px; width: 100%; max-width: 450px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
           border-radius: 14px; margin-bottom: 15px; }
 
     .Tofu { width: 100%; padding: 16px; margin-top: 15px; margin-bottom: 15px; border: 1px solid #ddd;
@@ -94,15 +95,20 @@
         
         h2 { font-size: 18px; margin-bottom: 16px; }
         
-        .Tofu { padding: 12px; font-size: 13px; }
-        
-        .info { width: auto; }
-        
-        .count { margin-left: auto; }
+        .Tofu { flex-wrap: nowrap; }
+
+        .info { flex: 1; min-width: 0; }
+
+        .count { flex-shrink: 0; }
         
         button { font-size: 14px; padding: 8px 12px; min-width: 70px; }
         
         .total-row h2 { font-size: 18px; }
+
+        .total-row { flex-direction: column; align-items: stretch; gap: 12px; }
+
+        .submit { width: 100%; }
+
     }
 
     /* 極小螢幕 */
