@@ -63,7 +63,7 @@
         <div class="selectOrdertitle">
             <div class="title-row">
                 <h1>查訂單</h1>
-                <button class="back-btn">返回</button>
+                <button class="back-btn" onclick="location.href='/'">返回</button>
             </div>
         </div>
         <form action="/tofu/select" method="get">
@@ -100,10 +100,5 @@
             <% } %>
         </div>
     </div>
-    <script>
-        document.querySelector('.back-btn').onclick = () => {
-            location.href = '/';
-        };
-    </script>
 </body>
 </html>

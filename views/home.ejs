@@ -29,19 +29,11 @@
     <div class="go" id="go">
         <img src="/Tofu.png" alt="藤原豆腐店">
         <div>
-            <button class="toOrder">下訂單</button>
-            <button class="selectOrder">查訂單</button>
+            <button class="toOrder" onclick="location.href='/tofu/order'">下訂單</button>
+            <button class="selectOrder" onclick="location.href='/tofu/select'">查訂單</button>
         </div>
         <p>*開放訂購時間 (1:00 AM ~ 5:00 AM)*</p>
         <p>*豆腐易壞只限當天現做*</p>
     </div>
-    <script>
-        document.querySelector('.toOrder').onclick = () => {
-            location.href = '/tofu/order';
-        };
-        document.querySelector('.selectOrder').onclick = () => {
-            location.href = '/tofu/select';
-        };
-    </script>
 </body>
 </html>

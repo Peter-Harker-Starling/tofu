@@ -73,7 +73,7 @@
     <div class="toOrdertitle">
         <div class="title-row">
             <h1>下訂單</h1>
-            <button class="back-btn">返回</button>
+            <button class="back-btn" onclick="location.href='/'">返回</button>
         </div>
     </div>
     <form action="/tofu/order" method="post" id="orderForm">
@@ -169,16 +169,6 @@
                     alert("文太：不買豆腐就別來亂！(請至少選擇一項商品)");
                     e.preventDefault(); // 阻止表單送出
                 };
-        };
-
-        const params = new URLSearchParams(location.search);
-        if (params.get('order') === 'success') {
-            alert('訂單已收到！');
-            history.replaceState(null, '', '/');
-        };
-
-        document.querySelector('.back-btn').onclick = () => {
-            location.href = '/';
         };
     </script>
 </body>

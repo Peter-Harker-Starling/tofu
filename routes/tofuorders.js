@@ -23,6 +23,13 @@ router.get('/order', async (req, res) => {
     res.render('order', { slotsWithStatus });
 });
 
+router.get('/success', (req, res) => {
+    if (req.query.status !== 'done') {
+        return res.redirect('/tofu/order'); // 沒帶參數就踢回去
+    }
+    res.render('success');
+});
+
 router.post('/order', async (req, res) => {
     try {
         const customerName = String(req.body.customerName).substring(0, 20);
@@ -72,7 +79,7 @@ router.post('/order', async (req, res) => {
 
         await newOrder.save();
 
-        res.redirect('/?order=success');
+        res.redirect('/tofu/success?status=done');
 
     } catch (err) {
         console.error(err);
