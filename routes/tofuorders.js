@@ -72,13 +72,7 @@ router.post('/order', async (req, res) => {
 
         await newOrder.save();
 
-        // 5. 成功後導向成功頁面或首頁
-        res.send(`
-            <script>
-                alert('訂單已收到！拓海大約 ${deliveryTime} 會送到秋名山。');
-                window.location.href = '/'; 
-            </script>
-        `);
+        res.redirect('/?order=success');
 
     } catch (err) {
         console.error(err);

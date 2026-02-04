@@ -171,6 +171,12 @@
                 };
         };
 
+        const params = new URLSearchParams(location.search);
+        if (params.get('order') === 'success') {
+            alert('訂單已收到！');
+            history.replaceState(null, '', '/');
+        };
+
         document.querySelector('.back-btn').onclick = () => {
             location.href = '/';
         };
