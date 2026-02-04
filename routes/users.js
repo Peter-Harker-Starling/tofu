@@ -52,13 +52,13 @@ router.post('/login', async (req, res) => {
     const accessToken = jwt.sign(
       { id: user._id, name: user.name },
       process.env.JWT_ACCESS_SECRET,
-      { expiresIn: '15m' }
+      { expiresIn: process.env.JWT_ACCESS_EXPIRES_IN }
     );
 
     const refreshToken = jwt.sign(
       { id: user._id },
       process.env.JWT_REFRESH_SECRET,
-      { expiresIn: '7d' }
+      { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN }
     );
 
     res.cookie('admin_access_token', accessToken, {

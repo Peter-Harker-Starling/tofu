@@ -5,7 +5,7 @@ function auth(req, res, next) {
   const access = req.cookies.admin_access_token;
   const refresh = req.cookies.admin_refresh_token;
 
-  if ( !access || !refresh ) {
+  if ( !refresh ) {
     return res.redirect('/users/login');
   };
 
@@ -29,7 +29,7 @@ function auth(req, res, next) {
     const newAccess = jwt.sign(
       { id: decoded.id },
       process.env.JWT_ACCESS_SECRET,
-      { expiresIn: '15m' }
+      { expiresIn: process.env.JWT_ACCESS_EXPIRES_IN }
     );
 
     res.cookie('admin_access_token', newAccess, {
@@ -39,7 +39,7 @@ function auth(req, res, next) {
       maxAge: 15 * 60 * 1000
     });
 
-    req.admin = decoded;
+    req.admin = { id: decoded.id };
     return next();
   } catch {
     res.clearCookie('admin_access_token');
