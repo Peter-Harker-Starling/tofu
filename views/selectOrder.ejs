@@ -11,7 +11,8 @@
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
                     "Noto Sans", Arial, sans-serif; }
 
-    body { display: flex; justify-content: flex-start; align-items: center; flex-direction: column; min-height: 100vh; padding: 40px 20px; }
+    body { display: flex; justify-content: flex-start; align-items: center; flex-direction: column; 
+         width: 100%; min-height: 100vh; padding: 40px 20px; overflow-x: hidden; }
 
     .container { width: 100%; max-width: 450px; }
 
@@ -38,7 +39,7 @@
     button:hover { box-shadow: 0 8px 20px rgba(54, 107, 214, 0.35); transform: translateY(-1px); }
     button:active { transform: translateY(0); box-shadow: 0 4px 10px rgba(54, 107, 214, 0.25); }
 
-    #resultArea h3 { margin-top: 10px; margin-bottom: 5px; font-size: 18px; }
+    .resultArea h3 { margin-top: 10px; margin-bottom: 5px; font-size: 18px; }
 
     .result { background: #fff; border-radius: 14px; padding: 20px; margin-top: 12px;
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08); font-size: 14px; line-height: 1.6; }
@@ -54,46 +55,8 @@
 
     .result li { margin-bottom: 4px; }
 
-    /* 總金額 */
     .result .total { margin-top: 10px; font-size: 20px; font-weight: bold; color: #366bd6; }
-    /* 平板尺寸 */
-    @media (max-width: 768px) {
-        body { padding: 20px 16px; }
-        
-        .selectOrdertitle, .selectOrdercontent {
-            padding: 24px;
-        }
-        
-        .title-row h1 { font-size: 24px; }
-        
-    }
-
-    /* 手機尺寸 */
-    @media (max-width: 480px) {
-        body { padding: 16px 12px; }
-        
-        .selectOrdertitle, .selectOrdercontent {
-            padding: 20px;
-            border-radius: 12px;
-        }
-        
-        .title-row { gap: 12px; }
-        
-        .title-row h1 { font-size: 20px; }
-        
-        button { font-size: 14px; padding: 8px 12px; min-width: 70px; }
-        
-        .selectOrdercontent { gap: 8px; }
-    }
-
-    /* 極小螢幕 */
-    @media (max-width: 360px) {
-        .title-row h1 { font-size: 18px; }
-        
-        .back-btn { font-size: 13px; padding: 6px 10px; }
-        
-        .submit { font-size: 13px; min-width: 60px; }
-    }
+    
 </style>
 <body>
     <div class="container">
@@ -109,7 +72,7 @@
                 <button class="submit">查詢</button>
             </div>
         </form>
-        <div id="resultArea" style="margin-top: 20px;">
+        <div class="resultArea" style="margin-top: 20px;">
             <% if (orders === null) { %>
                 <!-- 尚未查詢，什麼都不顯示 -->
             <% } else if (orders.length === 0) { %>
