@@ -24,7 +24,7 @@
     .back-btn { margin: 0; white-space: nowrap; }
     
     .toOrdercontent {  padding: 32px; width: 100%; max-width: 450px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-          border-radius: 14px; margin-bottom: 15px; display: block; box-sizing: border-box; }
+          border-radius: 14px; margin-bottom: 15px; box-sizing: border-box; }
 
     h2 { margin-bottom: 20px;  font-size: clamp(20px, 4vw, 24px); }
 
@@ -52,7 +52,7 @@
 
     .count input { width: 40px; text-align: center; border: 0; }
 
-    .total {  padding: 32px; width: 100%; max-width: 450px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    .total { padding: 32px; width: 100%; max-width: 450px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
          border-radius: 14px; box-sizing: border-box; }
 
     .total-row { display: flex; align-items: center; justify-content: space-between;
@@ -68,58 +68,6 @@
     button:hover { box-shadow: 0 8px 20px rgba(54, 107, 214, 0.35); transform: translateY(-1px); }
     button:active { transform: translateY(0); box-shadow: 0 4px 10px rgba(54, 107, 214, 0.25); }
 
-    /* 平板尺寸 */
-    @media (max-width: 768px) {
-        body { padding: 20px 16px; }
-        
-        .toOrdertitle, .toOrdercontent, .toOrdertofu, .total {
-            padding: 24px;
-        }
-        
-        .title-row h1 { font-size: 24px; }
-        
-        h2 { font-size: 20px; }
-    }
-
-    /* 手機尺寸 */
-    @media (max-width: 480px) {
-        body { padding: 16px 12px; }
-        
-        .toOrdertitle, .toOrdercontent, .toOrdertofu, .total {
-            padding: 20px;
-            border-radius: 12px;
-        }
-        
-        .title-row { gap: 12px; }
-        
-        .title-row h1 { font-size: 20px; }
-        
-        h2 { font-size: 18px; margin-bottom: 16px; }
-        
-        .Tofu { flex-wrap: nowrap; }
-
-        .info { flex: 1; min-width: 0; }
-
-        .count { flex-shrink: 0; }
-        
-        button { font-size: 14px; padding: 8px 12px; min-width: 70px; }
-        
-        .total-row h2 { font-size: 18px; }
-
-        .total-row { flex-direction: column; align-items: stretch; gap: 12px; }
-
-    }
-
-    /* 極小螢幕 */
-    @media (max-width: 360px) {
-        .title-row h1 { font-size: 18px; }
-        
-        .back-btn { font-size: 13px; padding: 6px 10px; }
-        
-        .count button { width: 28px; height: 28px; font-size: 14px; }
-        
-        .count input { width: 35px; font-size: 13px; }
-    }
 </style>
 <body>
     <div class="toOrdertitle">
