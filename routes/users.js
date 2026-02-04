@@ -82,16 +82,8 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/logout', auth, (req, res) => {
-  res.clearCookie('admin_access_token', {
-    httpOnly: true,
-    sameSite: 'strict',
-    secure: process.env.NODE_ENV === 'production'
-  });
-  res.clearCookie('admin_refresh_token', {
-    httpOnly: true,
-    sameSite: 'strict',
-    secure: process.env.NODE_ENV === 'production'
-  });
+  res.clearCookie('admin_access_token');
+  res.clearCookie('admin_refresh_token');
   res.redirect('/users/login');
 });
 

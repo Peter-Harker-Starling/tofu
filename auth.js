@@ -5,10 +5,35 @@ function auth(req, res, next) {
   const access = req.cookies.admin_access_token;
   const refresh = req.cookies.admin_refresh_token;
 
+  // 沒有 refresh token 就直接導向登入
   if ( !refresh ) {
     return res.redirect('/users/login');
   };
 
+  // 沒有 access token，直接用 refresh token 續期
+  if ( !access ) {
+    try {
+      const decoded = jwt.verify(refresh, process.env.JWT_REFRESH_SECRET);
+      const newAccess = jwt.sign(
+        { id: decoded.id },
+        process.env.JWT_ACCESS_SECRET,
+        { expiresIn: process.env.JWT_ACCESS_EXPIRES_IN }
+      );
+      res.cookie('admin_access_token', newAccess, {
+        httpOnly: true,
+        sameSite: 'strict',
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 15 * 60 * 1000
+      });
+      req.admin = { id: decoded.id };
+      return next();
+    } catch {
+      res.clearCookie('admin_refresh_token');
+      return res.redirect('/users/login');
+    };
+  };
+
+  // 有 access token，嘗試驗證
   try {
     const decoded = jwt.verify(access, process.env.JWT_ACCESS_SECRET);
     req.admin = decoded;
