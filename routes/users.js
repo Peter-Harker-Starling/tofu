@@ -49,41 +49,28 @@ router.post('/login', async (req, res) => {
       return res.render('login', { error: '密碼不正確！' });
     };
 
-    const accessToken = jwt.sign(
+    const token = jwt.sign(
       { id: user._id, name: user.name },
-      process.env.JWT_ACCESS_SECRET,
-      { expiresIn: process.env.JWT_ACCESS_EXPIRES_IN }
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN }
     );
-
-    const refreshToken = jwt.sign(
-      { id: user._id },
-      process.env.JWT_REFRESH_SECRET,
-      { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN }
-    );
-
-    res.cookie('admin_access_token', accessToken, {
+    
+    res.cookie('admin_token', token, {
       httpOnly: true,
       sameSite: 'strict',
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 15 * 60 * 1000
-    });
-
-    res.cookie('admin_refresh_token', refreshToken, {
-      httpOnly: true,
-      sameSite: 'strict',
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 7 * 24 * 60 * 60 * 1000
+      maxAge: 60 * 60 * 1000 // Cookie 效期也要同步 1 小時
     });
 
     res.redirect('/tofu/dashboard');
   } catch (err) {
+    console.log(err);
     return res.render('login', { error: '伺服器怪怪的...' });
   };
 });
 
 router.post('/logout', auth, (req, res) => {
-  res.clearCookie('admin_access_token');
-  res.clearCookie('admin_refresh_token');
+  res.clearCookie('admin_token');
   res.redirect('/users/login');
 });
 
