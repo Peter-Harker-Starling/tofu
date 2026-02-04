@@ -25,26 +25,22 @@ router.get('/order', async (req, res) => {
 
 router.post('/order', async (req, res) => {
     try {
-        const { customerName, phone, address, deliveryTime } = req.body;
+        const customerName = String(req.body.customerName).substring(0, 20);
+        const { phone, address, deliveryTime } = req.body;
 
-        // 1. 過勞檢查：檢查同一個 deliveryTime 是否已有 2 張單
-        const orderCount = await TofuOrder.countDocuments({ deliveryTime });
-        if (orderCount >= 2) {
-            return res.status(400).send(`
-                <script>
-                    alert('這個時段拓海送不完了，請選別的時間！');
-                    window.history.back();
-                </script>
-            `);
-        };
+        const validSlots = ['01:00', '02:00', '03:00', '04:00', '05:00'];
+        if (!validSlots.includes(deliveryTime)) {
+            return res.status(400).send("非法配送時間");
+        }
 
-        // 2. 處理商品與計算金額
         let itemsToSave = [];
         let totalAmount = 0;
 
         // 遍歷我們定義的產品清單，看 req.body 裡面有沒有對應的數量
         for (const key in PRODUCTS) {
             const qty = parseInt(req.body[key]) || 0;
+            if (qty > 20) return res.status(400).send("拓海開的是 AE86，不是卡車，量太多了！");
+
             if (qty > 0) {
                 const itemTotal = PRODUCTS[key].price * qty;
                 totalAmount += itemTotal;
@@ -60,6 +56,9 @@ router.post('/order', async (req, res) => {
         if (itemsToSave.length === 0) {
             return res.status(400).send("文太：至少要買一塊豆腐吧！");
         };
+
+        const orderCount = await TofuOrder.countDocuments({ deliveryTime });
+        if (orderCount >= 2) return res.status(400).send("已額滿");
 
         // 4. 存入資料庫
         const newOrder = new TofuOrder({
