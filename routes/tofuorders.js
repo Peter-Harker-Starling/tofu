@@ -47,7 +47,7 @@ router.post('/order', async (req, res) => {
 
         // 遍歷我們定義的產品清單，看 req.body 裡面有沒有對應的數量
         for (const key in PRODUCTS) {
-            const qty = parseInt(req.body[key]) || 0;
+            const qty = Math.max(0, parseInt(req.body[key]) || 0);
             if (qty > 20) return res.status(400).send("拓海開的是 AE86，不是卡車，量太多了！");
 
             if (qty > 0) {
@@ -112,27 +112,27 @@ router.get('/dashboard', auth, csrfProtection, async (req, res) => {
 });
 
 router.patch('/:id/status', auth, csrfProtection, async (req, res) => {
-  const { status } = req.body;
-  if (!['準備中', '已出貨'].includes(status)) {
-    return res.status(400).json({ error: '無效的訂單狀態' });
-  }
+    const { status } = req.body;
+    if (!['準備中', '已出貨'].includes(status)) {
+        return res.status(400).json({ error: '無效的訂單狀態' });
+    }
 
-  const order = await TofuOrder.findByIdAndUpdate(
-    req.params.id,
-    { status },
-    { new: true }
-  );
+    const order = await TofuOrder.findByIdAndUpdate(
+        req.params.id,
+        { status },
+        { new: true }
+    );
 
-  if (!order) {
-    return res.status(404).json({ error: '訂單不存在' });
-  };
+    if (!order) {
+        return res.status(404).json({ error: '訂單不存在' });
+    };
 
-  res.redirect('/tofu/dashboard');
+    res.redirect('/tofu/dashboard');
 });
 
 router.delete('/:id', auth, csrfProtection, async (req, res) => {
-  await TofuOrder.findByIdAndDelete(req.params.id);
-  res.redirect('/tofu/dashboard');
+    await TofuOrder.findByIdAndDelete(req.params.id);
+    res.redirect('/tofu/dashboard');
 });
 
 module.exports = router;
