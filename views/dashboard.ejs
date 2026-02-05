@@ -92,12 +92,14 @@
 
                     <div class="status-form">
                         <form action="/tofu/<%= order._id %>/status?_method=PATCH" method="POST">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <select name="status" onchange="this.form.submit()" class="custom-select">
                                 <option value="準備中" <%= order.status === '準備中' ? 'selected' : '' %>>準備中</option>
                                 <option value="已出貨" <%= order.status === '已出貨' ? 'selected' : '' %>>已出貨</option>
                             </select>
                         </form>
                         <form action="/tofu/<%= order._id %>?_method=DELETE" method="POST">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <button type="submit" class="del-btn" 
                                     onclick="return confirm('確定刪除這筆訂單?')">刪除</button>
                         </form>

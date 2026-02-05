@@ -1,8 +1,10 @@
 const express = require('express');
 const TofuOrder = require('../models/tofuorder');
 const auth = require('../auth');
+const csrf = require('csurf');
 
 const router = express.Router();
+const csrfProtection = csrf({ cookie: true });
 
 // 定義品項價格（與前端一致）
 const PRODUCTS = {
@@ -100,16 +102,16 @@ router.get('/select', async (req, res) => {
     res.render('selectOrder', { orders });
 });
 
-router.get('/dashboard', auth, async (req, res) => {
+router.get('/dashboard', auth, csrfProtection, async (req, res) => {
     try {
         const orders = await TofuOrder.find().sort({ createdAt: -1 }); // 新的在前
-        res.render('dashboard', { orders: orders });
+        res.render('dashboard', { orders: orders, csrfToken: req.csrfToken() });
     } catch (err) {
         res.status(500).send("系統出錯了，請檢查後台");
     };
 });
 
-router.patch('/:id/status', auth, async (req, res) => {
+router.patch('/:id/status', auth, csrfProtection, async (req, res) => {
   const { status } = req.body;
   if (!['準備中', '已出貨'].includes(status)) {
     return res.status(400).json({ error: '無效的訂單狀態' });
@@ -128,7 +130,7 @@ router.patch('/:id/status', auth, async (req, res) => {
   res.redirect('/tofu/dashboard');
 });
 
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', auth, csrfProtection, async (req, res) => {
   await TofuOrder.findByIdAndDelete(req.params.id);
   res.redirect('/tofu/dashboard');
 });
